@@ -94,25 +94,25 @@ Rails.application.configure do
   #   openssl_verify_mode: 'none'
   # }
 
+  # config.action_mailer.smtp_settings = {
+  #   :port           => ENV['MAILGUN_SMTP_PORT'],
+  #   :address        => ENV['MAILGUN_SMTP_SERVER'],
+  #   :user_name      => ENV['MAILGUN_SMTP_LOGIN'],
+  #   :password       => ENV['MAILGUN_SMTP_PASSWORD'],
+  #   :domain         => 'garden-care.ml',
+  #   :authentication => :plain,
+  # }
+
   config.action_mailer.smtp_settings = {
-    :port           => ENV['MAILGUN_SMTP_PORT'],
-    :address        => ENV['MAILGUN_SMTP_SERVER'],
-    :user_name      => ENV['MAILGUN_SMTP_LOGIN'],
-    :password       => ENV['MAILGUN_SMTP_PASSWORD'],
-    :domain         => 'garden-care.ml',
-    :authentication => :plain,
+    :address              => ENV['MAILERTOGO_SMTP_HOST'],
+    :port                 => ENV['MAILERTOGO_SMTP_PORT'],
+    :user_name            => ENV['MAILERTOGO_SMTP_USER'],
+    :password             => ENV['MAILERTOGO_SMTP_PASSWORD'],
+    :domain               => ENV['MAILERTOGO_DOMAIN'],
+    :authentication       => :plain,
+    :enable_starttls_auto => true,
   }
 
   config.action_mailer.perform_deliveries = true
 
 end
-
-=begin
-swaks --auth \
-        --server smtp.mailgun.org \
-        --au postmaster@garden-care.ml \
-        --ap 5e4904c1d861cf2eb16869ebb59dd552-787e6567-266be077 \
-        --to rickreyhsig@hotmail.com \
-        --h-Subject: "Hello" \
-        --body 'Testing Mailgun!'
-=end
