@@ -83,25 +83,25 @@ Rails.application.configure do
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = false
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = {
-    address:              'smtp.office365.com',
-    port:                 587,
-    domain:               'garden-care.herokuapp.com',
-    user_name:            ENV["OUTLOOK_USER_NAME"],
-    password:             ENV["OUTLOOK_PASSWORD"],
-    authentication:       'plain',
-    enable_starttls_auto: true,
-    openssl_verify_mode: 'none'
-  }
-
   # config.action_mailer.smtp_settings = {
-  #   :port           => ENV['MAILGUN_SMTP_PORT'],
-  #   :address        => ENV['MAILGUN_SMTP_SERVER'],
-  #   :user_name      => ENV['MAILGUN_SMTP_LOGIN'],
-  #   :password       => ENV['MAILGUN_SMTP_PASSWORD'],
-  #   :domain         => 'https://garden-care.herokuapp.com',
-  #   :authentication => :plain,
+  #   address:              'smtp.office365.com',
+  #   port:                 587,
+  #   domain:               'garden-care.herokuapp.com',
+  #   user_name:            ENV["OUTLOOK_USER_NAME"],
+  #   password:             ENV["OUTLOOK_PASSWORD"],
+  #   authentication:       'plain',
+  #   enable_starttls_auto: true,
+  #   openssl_verify_mode: 'none'
   # }
+
+  config.action_mailer.smtp_settings = {
+    :port           => ENV['MAILGUN_SMTP_PORT'],
+    :address        => ENV['MAILGUN_SMTP_SERVER'],
+    :user_name      => ENV['MAILGUN_SMTP_LOGIN'],
+    :password       => ENV['MAILGUN_SMTP_PASSWORD'],
+    :domain         => 'https://garden-care.herokuapp.com',
+    :authentication => :plain,
+  }
 
   config.action_mailer.perform_deliveries = true
 
