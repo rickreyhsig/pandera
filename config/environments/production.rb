@@ -80,14 +80,13 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { :host => 'https://garden-care.herokuapp.com' }
 
   # Mailer
-  # config.action_mailer.raise_delivery_errors = false
   config.action_mailer.perform_deliveries = true
-  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.raise_delivery_errors = false
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
     address:              'smtp.office365.com',
     port:                 587,
-    domain:               'https://garden-care.herokuapp.com',
+    domain:               'garden-care.herokuapp.com',
     user_name:            ENV["OUTLOOK_USER_NAME"],
     password:             ENV["OUTLOOK_PASSWORD"],
     authentication:       'plain',
