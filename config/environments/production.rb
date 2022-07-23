@@ -83,12 +83,23 @@ Rails.application.configure do
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = false
   config.action_mailer.delivery_method = :smtp
+  # config.action_mailer.smtp_settings = {
+  #   address:              'smtp.office365.com',
+  #   port:                 587,
+  #   domain:               'garden-care.herokuapp.com',
+  #   user_name:            ENV["OUTLOOK_USER_NAME"],
+  #   password:             ENV["OUTLOOK_PASSWORD"],
+  #   authentication:       'plain',
+  #   enable_starttls_auto: true,
+  #   openssl_verify_mode: 'none'
+  # }
+
   config.action_mailer.smtp_settings = {
-    address:              'smtp.office365.com',
+    address:              'smtp-relay.sendinblue.com',
     port:                 587,
     domain:               'garden-care.herokuapp.com',
-    user_name:            ENV["OUTLOOK_USER_NAME"],
-    password:             ENV["OUTLOOK_PASSWORD"],
+    user_name:            ENV["SENDINBLUE_USER_NAME"],
+    password:             ENV["SENDINBLUE_PASSWORD"],
     authentication:       'plain',
     enable_starttls_auto: true,
     openssl_verify_mode: 'none'
