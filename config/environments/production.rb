@@ -99,10 +99,20 @@ Rails.application.configure do
     :address        => ENV['MAILGUN_SMTP_SERVER'],
     :user_name      => ENV['MAILGUN_SMTP_LOGIN'],
     :password       => ENV['MAILGUN_SMTP_PASSWORD'],
-    :domain         => 'https://garden-care.herokuapp.com',
+    :domain         => 'garden-care.ml',
     :authentication => :plain,
   }
 
   config.action_mailer.perform_deliveries = true
 
 end
+
+=begin
+swaks --auth \
+        --server smtp.mailgun.org \
+        --au postmaster@garden-care.ml \
+        --ap 5e4904c1d861cf2eb16869ebb59dd552-787e6567-266be077 \
+        --to rickreyhsig@hotmail.com \
+        --h-Subject: "Hello" \
+        --body 'Testing Mailgun!'
+=end
