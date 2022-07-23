@@ -84,13 +84,14 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = false
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-    address:              'smtp.live.com',
+    address:              'smtp.office365.com',
     port:                 587,
     domain:               'garden-care.herokuapp.com',
     user_name:            ENV["OUTLOOK_USER_NAME"],
     password:             ENV["OUTLOOK_PASSWORD"],
     authentication:       'plain',
-    enable_starttls_auto: true
+    enable_starttls_auto: true,
+    openssl_verify_mode: 'none'
   }
 
   # config.action_mailer.smtp_settings = {
