@@ -6,11 +6,27 @@ class EstimatesController < ApplicationController
   # GET /estimates.json
   def index
     @estimates = Estimate.all
+    respond_to do |format|
+      format.html
+      format.csv { send_data Estimate.all.to_csv }
+      #format.xls # { send_data @products.to_csv(col_sep: "\t") }
+    end
   end
 
   # GET /estimates/1
   # GET /estimates/1.json
   def show
+    @estimate = Estimate.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.pdf do
+        pdf = EstimatePdf.new(@estimate, view_context)
+        send_data pdf.render, filename:
+        "estimate_#{@estimate.created_at.strftime("%d/%m/%Y")}.pdf",
+        type: "application/pdf",
+        disposition: "inline"
+      end
+    end
   end
 
   # GET /estimates/new
@@ -29,8 +45,8 @@ class EstimatesController < ApplicationController
 
     respond_to do |format|
       if @estimate.save
-        EstimateMailer.estimate_created(@estimate).deliver_now
-        EstimateSmsMailer.estimate_created(@estimate).deliver_now
+        EstimateMailer.estimate_created(@estimate).deliver_now if @estimate.client.email.present?
+        EstimateSmsMailer.estimate_created(@estimate).deliver_now if @estimate.client.phone.present? && @estimate.client.sms_gateway.present?
         format.html { redirect_to @estimate, notice: 'Estimate was successfully created.' }
         format.json { render :show, status: :created, location: @estimate }
       else

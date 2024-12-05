@@ -39,43 +39,47 @@ class InvoicePdf < Prawn::Document
 		 :at => [400,720], :height => 100, :width => 100, :style => :bold, :size => 25
 		text_box date,
 		 :at => [400,695], :height => 100, :width => 100, :style => :bold, :size => 12
-		text_box "Invoice# #{@invoice.invoice_number}",
+		text_box "Invoice ID# #{@invoice.id}",
 		 :at => [400,680], :height => 100, :width => 100, :style => :bold, :size => 12
 		text " \n " * 2
 	end
 
 	def bill_to
-		text 'Bill To', style: :bold
-		text @invoice.client.name
-		text @invoice.client.street_address
-		text @invoice.client.city + ' ' + @invoice.client.zipcode
+    text 'Bill To', style: :bold
+    text @invoice.client.name
+    text @invoice.client.street_address
+    text "#{@invoice.client.city} #{@invoice.client.zipcode}"
 	end
 
 	def services
 		text " \n " * 3
 		text 'Services', style: :bold, size: 18
-		data = [["Description                                       ", "Date of service                     ", "Price         ", "Total          "]]
+		data = [["Description         ", "Notes",  "Date of service                     ", "Price         ", "Total          "]]
 
 		@invoice.services.each do |srvc|
-			data << [srvc.description, srvc.date.to_s, srvc.price.to_s, srvc.price.to_s]
+			data << [srvc.description, srvc.notes, srvc.date.to_s, srvc.price.to_s, srvc.price.to_s]
 		end
 
 		table(data, :row_colors => ["F0F0F0","FFFFFF"])
 	end
 
 	def footer
-		sa = ShippingAddress.where("is_default IS TRUE").first
-		text_box "Please make checks payable to: \n #{sa.name}",
+    balance = @invoice.total
+    balance += @invoice.client.credit if @invoice.client.credit
+    balance = 0 if @invoice.paid == true
+    sa = ShippingAddress.where("is_default IS TRUE").first
+    sa_name = @invoice.payable_to ? @invoice.payable_to : sa.name
+		text_box "Please make checks payable to: \n #{sa_name}",
 			:at => [0,35], :height => 100, :width => 250, :size => 12
-		text_box "Subtotal #{@invoice.total}",
+		text_box "Subtotal $#{@invoice.total}",
 			:at => [390,100], :height => 100, :width => 150, :style => :bold, :size => 12
 		text_box "Sales Tax (0.0%)",
 			:at => [390,80], :height => 100, :width => 150, :style => :bold, :size => 12
-		text_box "Total: #{@invoice.total}",
+		text_box "Total: $#{@invoice.total}",
 			:at => [390,60], :height => 100, :width => 150, :style => :bold, :size => 12
-		text_box "Payments/Credits",
+		text_box "Payments/Credits $#{@invoice.client.credit}",
 			:at => [390,40], :height => 100, :width => 190, :style => :bold, :size => 12
-		text_box "Balance Due: #{@invoice.total}",
+		text_box "Balance Due: $#{balance}",
 			:at => [390,20], :height => 100, :width => 150, :style => :bold, :size => 12
 	end
 

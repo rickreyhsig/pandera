@@ -1,12 +1,10 @@
 source 'https://rubygems.org'
 
 #ruby '2.2.2'
-ruby '2.2.4'
+ruby '2.4.2'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.5'
-# Use sqlite3 as the database for Active Record
-#gem 'sqlite3'
+gem 'rails', '4.2.8'
 gem 'pg'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
@@ -14,22 +12,22 @@ gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.1.0'
-# See https://github.com/rails/execjs#readme for more supported runtimes
-# gem 'therubyracer', platforms: :ruby
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
+gem 'jquery-ui-rails'
 
 # Twitter Bootstrap gem
 gem "therubyracer"
 gem "less-rails"
-gem 'twitter-bootstrap-rails', :git => 'git://github.com/seyhunak/twitter-bootstrap-rails.git'
-
-# Authentication gem
-gem 'devise'
+gem 'twitter-bootstrap-rails'
 
 # Pagination gem
 gem 'will_paginate', '~> 3.0.6'
+gem 'bootstrap-will_paginate'
+
+# Authentication gem
+gem 'devise'
 
 # I18n gem
 gem 'rails-i18n'
@@ -56,19 +54,12 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # For PDF's
 gem 'prawn'
 gem 'prawn-table'
-
-# Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
-
-# Use Unicorn as the app server
-# gem 'unicorn'
-
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
+gem 'rollbar'
 
 group :development, :test do
     # Call 'byebug' anywhere in the code to stop execution and get a debugger console
     gem 'byebug'
+    gem 'rubocop'
     # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
     gem 'spring'
     gem 'spring-commands-rspec'
@@ -76,6 +67,8 @@ group :development, :test do
     # RSpec
     gem 'rspec-rails'
     gem 'factory_girl_rails'
+    gem "better_errors"
+    gem "binding_of_caller"
 end
 
 group :test do
@@ -96,4 +89,3 @@ end
 group :production do
   gem 'rails_12factor', group: :production
 end
-

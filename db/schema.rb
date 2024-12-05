@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170405184230) do
+ActiveRecord::Schema.define(version: 20190207223513) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,12 +35,26 @@ ActiveRecord::Schema.define(version: 20170405184230) do
   add_index "admins", ["email"], name: "index_admins_on_email", unique: true, using: :btree
   add_index "admins", ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true, using: :btree
 
+  create_table "client_schedules", force: :cascade do |t|
+    t.integer  "client_id"
+    t.integer  "schedule_id"
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+    t.string   "client_street_address"
+    t.string   "time"
+    t.string   "service_type"
+    t.string   "notes"
+    t.boolean  "done"
+    t.integer  "service_id"
+    t.decimal  "price"
+  end
+
   create_table "clients", force: :cascade do |t|
     t.string   "name"
     t.string   "email"
     t.string   "phone"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
     t.date     "dob"
     t.string   "city"
     t.string   "zipcode"
@@ -48,6 +62,13 @@ ActiveRecord::Schema.define(version: 20170405184230) do
     t.string   "sms_gateway"
     t.text     "notes"
     t.decimal  "credit"
+    t.string   "state"
+    t.string   "email2"
+    t.string   "phone2"
+    t.string   "sms_gateway2"
+    t.boolean  "prospect"
+    t.decimal  "lat",            precision: 10, scale: 6
+    t.decimal  "lng",            precision: 10, scale: 6
   end
 
   create_table "estimates", force: :cascade do |t|
@@ -77,6 +98,19 @@ ActiveRecord::Schema.define(version: 20170405184230) do
     t.datetime "updated_at",     null: false
     t.boolean  "paid"
     t.string   "check_number"
+    t.string   "payable_to"
+  end
+
+  create_table "schedules", force: :cascade do |t|
+    t.date     "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "service_types", force: :cascade do |t|
+    t.string   "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   create_table "services", force: :cascade do |t|
@@ -89,6 +123,7 @@ ActiveRecord::Schema.define(version: 20170405184230) do
     t.integer  "client_id"
     t.boolean  "paid"
     t.integer  "invoice_id"
+    t.text     "notes"
   end
 
   create_table "shipping_addresses", force: :cascade do |t|

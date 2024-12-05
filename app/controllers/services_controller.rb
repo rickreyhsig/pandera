@@ -6,7 +6,12 @@ class ServicesController < ApplicationController
   # GET /services.json
   def index
     #@services = Service.search(params[:search]).order(sort_column + ' ' + sort_direction).paginate(:per_page => 15, :page => params[:page])
-    @services = Service.search(params[:search]).order("created_at DESC").order(sort_column + ' ' + sort_direction).paginate(:per_page => 15, :page => params[:page])
+    @services = Service.includes(:client, :invoice).search(params[:search]).order("created_at DESC").order(sort_column + ' ' + sort_direction).paginate(:per_page => 15, :page => params[:page])
+    respond_to do |format|
+      format.html
+      format.csv { send_data Service.all.to_csv }
+      #format.xls # { send_data @services.to_csv(col_sep: "\t") }
+    end
   end
 
   # GET /services/1
@@ -75,7 +80,7 @@ class ServicesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def service_params
-      params.require(:service).permit(:date, :description, :maturity, :client_id, :paid, :invoice_id, :price)
+      params.require(:service).permit(:date, :description, :maturity, :client_id, :paid, :invoice_id, :price, :notes)
     end
     def sort_column
       Service.column_names.include?(params[:sort]) ? params[:sort] : "id"

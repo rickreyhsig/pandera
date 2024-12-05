@@ -6,9 +6,14 @@ class InvoicesController < ApplicationController
   # GET /invoices.json
   def index
     #@invoices = Invoice.search(params[:search]).order(sort_column + ' ' + sort_direction).paginate(:per_page => 15, :page => params[:page])
-    @invoices = Invoice.search(params[:search]).order("created_at DESC").paginate(:per_page => 10, :page => params[:page])
+    @invoices = Invoice.includes(:client).search(params[:search]).order("created_at DESC").paginate(:per_page => 10, :page => params[:page])
     if params[:overdue]
       @invoices = @invoices.where('? > maturity', Date.today).where('paid IS NOT TRUE')
+    end
+
+    respond_to do |format|
+      format.html
+      format.csv { send_data Invoice.includes(:client).to_csv }
     end
   end
 
@@ -24,6 +29,20 @@ class InvoicesController < ApplicationController
         "invoice_#{@invoice.created_at.strftime("%d/%m/%Y")}.pdf",
         type: "application/pdf",
 				disposition: "inline"
+      end
+    end
+  end
+
+  def letter
+    @invoice = Invoice.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.pdf do
+        pdf = InvoiceLetterPdf.new(@invoice, view_context)
+        send_data pdf.render, filename:
+        "invoice_#{@invoice.created_at.strftime("%d/%m/%Y")}.pdf",
+        type: "application/pdf",
+        disposition: "inline"
       end
     end
   end
@@ -53,8 +72,8 @@ class InvoicesController < ApplicationController
 
   def payment_reminder
     @invoice = Invoice.find(params[:id])
-    InvoiceMailer.invoice_reminder(@invoice).deliver_now
-    InvoiceSmsMailer.invoice_reminder(@invoice).deliver_now
+    InvoiceMailer.invoice_reminder(@invoice).deliver_now if @invoice.client.email.present?
+    InvoiceSmsMailer.invoice_reminder(@invoice).deliver_now if @invoice.client.phone.present? && @invoice.client.sms_gateway.present?
   end
 
   # POST /invoices
@@ -63,9 +82,9 @@ class InvoicesController < ApplicationController
     @invoice = Invoice.new(invoice_params)
     respond_to do |format|
       if @invoice.save
-        InvoiceMailer.invoice_created(@invoice).deliver_now
-        InvoiceSmsMailer.invoice_created(@invoice).deliver_now
-        format.html { redirect_to invoice_path(@invoice.id, :format => :pdf), notice: 'Invoice was successfully created.' }
+        InvoiceMailer.invoice_created(@invoice).deliver_now if @invoice.client.email.present?
+        InvoiceSmsMailer.invoice_created(@invoice).deliver_now if @invoice.client.phone.present? && @invoice.client.sms_gateway.present?
+        format.html { redirect_to invoices_path, notice: 'Invoice was successfully created.' }
         format.json { render :show, status: :created, location: @invoice }
       else
         @client_id = params[:invoice][:client_id]
@@ -113,7 +132,7 @@ class InvoicesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def invoice_params
-      params.require(:invoice).permit(:client_id, :invoice_number, :maturity, :date_of_service, :description, :price, :total, :paid, :check_number)
+      params.require(:invoice).permit(:client_id, :invoice_number, :maturity, :date_of_service, :description, :price, :total, :paid, :check_number, :payable_to)
     end
 
     def sort_column
