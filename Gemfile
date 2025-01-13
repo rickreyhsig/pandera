@@ -33,7 +33,8 @@ gem 'devise'
 gem 'rails-i18n'
 
 # Carrierwave for image manipulation
-gem 'carrierwave'#, '>= 1.0.0.beta', '< 2.0'
+gem 'carrierwave', '~> 2.2.6'
+
 # Dropbox for image hosting
 gem 'carrierwave-dropbox'
 
