@@ -28,7 +28,9 @@ gem 'will_paginate', '~> 3.0.6'
 gem 'bootstrap-will_paginate'
 
 # Authentication gem
-gem 'devise'
+# gem 'devise'
+gem 'devise', '4.7.1' # This version is known to have vulnerabilities
+
 
 # I18n gem
 gem 'rails-i18n'
@@ -58,7 +60,7 @@ gem 'prawn'
 gem 'prawn-table'
 gem 'rollbar'
 # gem 'loofah', '2.2.2' # This version is known to have vulnerabilities
-gem 'devise', '4.7.1' # This version is known to have vulnerabilities
+gem 'nokogiri', '1.10.10' # This version is known to have vulnerabilities
 
 group :development, :test do
     # Call 'byebug' anywhere in the code to stop execution and get a debugger console
