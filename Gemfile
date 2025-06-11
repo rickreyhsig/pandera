@@ -58,6 +58,7 @@ gem 'prawn'
 gem 'prawn-table'
 gem 'rollbar'
 # gem 'loofah', '2.2.2' # This version is known to have vulnerabilities
+gem 'devise', '4.7.1' # This version is known to have vulnerabilities
 
 group :development, :test do
     # Call 'byebug' anywhere in the code to stop execution and get a debugger console
