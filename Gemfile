@@ -87,7 +87,7 @@ end
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
-  gem 'rack', '2.2.3'  # This version is known to have vulnerabilities
+  gem 'rack', '1.6.13'  # This version is known to have vulnerabilities
 end
 
 group :production do
