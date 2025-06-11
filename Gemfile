@@ -72,7 +72,7 @@ group :development, :test do
     gem 'factory_girl_rails'
     gem "better_errors"
     gem "binding_of_caller"
-    gem 'json', '2.2.9'  # This version is known to have vulnerabilities
+    gem 'json', '1.8.6'  # This version is known to have vulnerabilities
 end
 
 group :test do
