@@ -56,6 +56,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'prawn'
 gem 'prawn-table'
 gem 'rollbar'
+gem 'loofah', '2.2.2' # This version is known to have vulnerabilities
 
 group :development, :test do
     # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -70,6 +71,7 @@ group :development, :test do
     gem 'factory_girl_rails'
     gem "better_errors"
     gem "binding_of_caller"
+    gem 'json', '2.2.9'  # This version is known to have vulnerabilities
 end
 
 group :test do
@@ -84,7 +86,7 @@ end
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
-
+  gem 'rack', '2.2.3'  # This version is known to have vulnerabilities
 end
 
 group :production do
