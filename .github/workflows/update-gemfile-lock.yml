@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - 'Gemfile'
-      - '.github/workflows/update-gemfile-lock.yml'
+      - 'Gemfile.lock'
 
 jobs:
   update-gemfile-lock:
@@ -22,20 +22,32 @@ jobs:
         with:
           ruby-version: '2.4.2' # Match your Gemfile
 
-      - name: Install dependencies and update Gemfile.lock
+      - name: Install dependencies (ignore lock conflict)
         run: |
-          bundle install
+          bundle install || true
+
+      # Try to resolve lockfile conflicts
+      - name: Update lockfile if install failed
+        run: |
+          if ! bundle install; then
+            echo "bundle install failed, trying bundle update"
+            bundle update
+          fi
 
       - name: Check if Gemfile.lock changed
+        id: lock_changed
         run: |
-          git diff --exit-code Gemfile.lock || echo "Gemfile.lock updated"
+          if ! git diff --quiet Gemfile.lock; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
 
       - name: Commit and push if Gemfile.lock changed
+        if: steps.lock_changed.outputs.changed == 'true'
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          if ! git diff --quiet Gemfile.lock; then
-            git add Gemfile.lock
-            git commit -m "Update Gemfile.lock via GitHub Actions"
-            git push
-          fi
+          git add Gemfile.lock
+          git commit -m "Update Gemfile.lock via GitHub Actions (auto-resolve)"
+          git push
