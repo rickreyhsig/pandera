@@ -62,6 +62,7 @@ gem 'rollbar'
 # gem 'loofah', '2.2.2' # This version is known to have vulnerabilities
 gem 'nokogiri', '1.10.10' # This version is known to have vulnerabilities
 
+
 group :development, :test do
     # Call 'byebug' anywhere in the code to stop execution and get a debugger console
     gem 'byebug'
