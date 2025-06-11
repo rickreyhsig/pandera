@@ -33,10 +33,10 @@ gem 'devise'
 gem 'rails-i18n'
 
 # Carrierwave for image manipulation
-gem 'carrierwave', '~> 2.2.6'
+# gem 'carrierwave', '~> 2.2.6'
 
 # Dropbox for image hosting
-gem 'carrierwave-dropbox'
+# gem 'carrierwave-dropbox'
 
 # Hiding secrets
 gem 'figaro'
