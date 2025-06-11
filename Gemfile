@@ -57,7 +57,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'prawn'
 gem 'prawn-table'
 gem 'rollbar'
-gem 'loofah', '2.2.2' # This version is known to have vulnerabilities
+# gem 'loofah', '2.2.2' # This version is known to have vulnerabilities
+gem 'actionpack', '4.2.5.2' # This version is known to have vulnerabilities
 
 group :development, :test do
     # Call 'byebug' anywhere in the code to stop execution and get a debugger console
